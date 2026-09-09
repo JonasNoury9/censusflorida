@@ -9,8 +9,15 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Florida Census and Race",
+    "title": "Racial Demographics in Sarasota County, Florida",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Sarasota County is often perceived as demographically uniform: countywide, the median census tract is 84.4% non-Hispanic White. However, mapping race by census tract reveals sharp historical and geographic divides.\n\n\n\n\n\n\n\n\n\nIn North Sarasota, Census Tract 3—encompassing the historic African American community of Newtown—is 74.5% Black, surrounded by tracts that quickly drop into single digits. Newtown was established in the early 1900s during the Jim Crow era when Black residents were restricted to specific sections of the city, leaving a lasting demographic footprint that remains visible in 2020 Census data."
+  },
+  {
+    "objectID": "index.html#a-stark-geographic-divide",
+    "href": "index.html#a-stark-geographic-divide",
+    "title": "Racial Demographics in Sarasota County, Florida",
+    "section": "",
+    "text": "Sarasota County is often perceived as demographically uniform: countywide, the median census tract is 84.4% non-Hispanic White. However, mapping race by census tract reveals sharp historical and geographic divides.\n\n\n\n\n\n\n\n\n\nIn North Sarasota, Census Tract 3—encompassing the historic African American community of Newtown—is 74.5% Black, surrounded by tracts that quickly drop into single digits. Newtown was established in the early 1900s during the Jim Crow era when Black residents were restricted to specific sections of the city, leaving a lasting demographic footprint that remains visible in 2020 Census data."
   }
 ]
