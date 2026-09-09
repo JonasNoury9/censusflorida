@@ -1,0 +1,172 @@
+---
+title: "Racial Demographics in Florida"
+---
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+library(tidyverse)
+library(sf)
+
+# Load and prepare Sarasota census data
+race_tracts <- read_rds("data/sarasota_race.rds") |>
+  filter(variable %in% c("P2_001N", "P2_002N", "P2_005N", "P2_006N")) |>
+  pivot_wider(names_from = variable, values_from = value) |>
+  mutate(
+    pct_black = 100 * P2_006N / P2_001N,
+    pct_hispanic = 100 * P2_002N / P2_001N,
+    pct_white = 100 * P2_005N / P2_001N
+  )
+
+# Load and prepare Florida Panhandle census data
+panhandle_tracts <- read_rds("data/panhandle_race.rds") |>
+  filter(variable %in% c("P2_001N", "P2_002N", "P2_006N")) |>
+  pivot_wider(names_from = variable, values_from = value) |>
+  mutate(
+    pct_black = 100 * P2_006N / P2_001N,
+    pct_hispanic = 100 * P2_002N / P2_001N
+  )
+```
+
+## Sarasota County: A Stark Geographic Divide
+
+Sarasota County is often perceived as demographically uniform: countywide, the median census tract is **84.4% non-Hispanic White**. However, mapping race by census tract reveals sharp historical and geographic divides.
+
+### Black Population in Sarasota County
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+
+ggplot(race_tracts) +
+  geom_sf(aes(fill = pct_black), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(
+    name = "% Black",
+    option = "magma",
+    labels = scales::percent_format(scale = 1)
+  ) +
+  labs(
+    title = "Concentration of Black Residents in Sarasota County",
+    subtitle = "Percentage of Black / African American residents by 2020 Census Tract",
+    caption = "Source: 2020 US Decennial Census (Table P2)"
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 10, color = "grey30"),
+    plot.caption = element_text(size = 8, color = "grey50", hjust = 0),
+    legend.position = "right"
+  )
+```
+
+In North Sarasota, **Census Tract 3**—encompassing the historic African American community of [Newtown](https://www.visitsarasota.com/article/historic-newtown)—is **74.5% Black**, surrounded by tracts that quickly drop into single digits. Newtown was established in the early 1900s during the Jim Crow era when Black residents were restricted to specific sections of the city, leaving a lasting demographic footprint that remains visible in 2020 Census data.
+
+### Hispanic Population in Sarasota County
+
+The distribution of Hispanic and Latino residents follows a different geographic pattern. While the county median is **6.8%**, tracts in northern and central Sarasota County (such as Tract 12.02 and Tract 4.06) reach **35% to 38% Hispanic**.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+
+ggplot(race_tracts) +
+  geom_sf(aes(fill = pct_hispanic), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(
+    name = "% Hispanic",
+    option = "plasma",
+    labels = scales::percent_format(scale = 1)
+  ) +
+  labs(
+    title = "Hispanic Population in Sarasota County",
+    subtitle = "Percentage of Hispanic / Latino residents by 2020 Census Tract",
+    caption = "Source: 2020 US Decennial Census (Table P2)"
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 10, color = "grey30"),
+    plot.caption = element_text(size = 8, color = "grey50", hjust = 0),
+    legend.position = "right"
+  )
+```
+
+## The Florida Panhandle: Plantation Legacy and Gadsden County
+
+Moving north, the Florida Panhandle illustrates how agricultural history shaped modern demographics. While coastal counties like Walton (4.4%) and Santa Rosa (5.7%) have small Black populations, **Gadsden County** (just west of Tallahassee) is **53.2% Black**—making it Florida's only majority-Black county.
+
+### Black Population Across the Florida Panhandle
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| fig-width: 10
+#| fig-height: 5
+
+ggplot(panhandle_tracts) +
+  geom_sf(aes(fill = pct_black), color = "white", linewidth = 0.1) +
+  scale_fill_viridis_c(
+    name = "% Black",
+    option = "magma",
+    labels = scales::percent_format(scale = 1),
+    na.value = "grey90"
+  ) +
+  labs(
+    title = "Black Population Across the Florida Panhandle",
+    subtitle = "Percentage of Black / African American residents by 2020 Census Tract",
+    caption = "Source: 2020 US Decennial Census (Table P2)"
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 10, color = "grey30"),
+    plot.caption = element_text(size = 8, color = "grey50", hjust = 0),
+    legend.position = "right"
+  )
+```
+
+As part of the antebellum "Black Belt," Gadsden County was historically dedicated to plantation agriculture (notably shade tobacco and cotton). Today, that legacy is reflected in its distinctive majority-Black population compared to the rest of the Florida Panhandle.
+
+### Hispanic Population Across the Panhandle
+
+Across the Panhandle, Hispanic residents represent a smaller share of the population overall (averaging ~7.3%), but show distinct clusters—particularly near military communities around Eglin Air Force Base in Okaloosa County and parts of Bay and Escambia counties, where tracts reach **20% to 30% Hispanic**.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| fig-width: 10
+#| fig-height: 5
+
+ggplot(panhandle_tracts) +
+  geom_sf(aes(fill = pct_hispanic), color = "white", linewidth = 0.1) +
+  scale_fill_viridis_c(
+    name = "% Hispanic",
+    option = "plasma",
+    labels = scales::percent_format(scale = 1),
+    na.value = "grey90"
+  ) +
+  labs(
+    title = "Hispanic Population Across the Florida Panhandle",
+    subtitle = "Percentage of Hispanic / Latino residents by 2020 Census Tract",
+    caption = "Source: 2020 US Decennial Census (Table P2)"
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 10, color = "grey30"),
+    plot.caption = element_text(size = 8, color = "grey50", hjust = 0),
+    legend.position = "right"
+  )
+```
+
+
+
